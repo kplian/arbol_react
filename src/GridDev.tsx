@@ -5,6 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 
+
 import {
     Column,
     TreeDataState,
@@ -12,7 +13,9 @@ import {
     SelectionState,
     IntegratedSelection,
     SearchState,
-    IntegratedFiltering
+    IntegratedFiltering,
+    SortingState,
+    IntegratedSorting,
 } from '@devexpress/dx-react-grid';
 import {
     Grid,
@@ -88,6 +91,8 @@ const GridDev = ({treeConfig}: any) => {
         defaultHiddenColumnNames,
         tableColumnVisibilityColumnExtensions,
         showColumnVisible,
+        defaultSorting,
+        showSortingControls,
     } = treeConfig;
 
     const columns: Column[] = columnas;
@@ -101,6 +106,15 @@ const GridDev = ({treeConfig}: any) => {
         }
         return row && row.hasItems ? [] : null;
     };
+    //
+    // const EditCell = (props) => {
+    //     const { column } = props;
+    //     const availableColumnValues = availableValues[column.name];
+    //     if (availableColumnValues) {
+    //         return <LookupEditCell {...props} availableColumnValues={availableColumnValues} />;
+    //     }
+    //     return <TableEditRow.Cell {...props} />;
+    // };
 
     const [data, setData] = useState([]);
     const rowExpanded: any = [];
@@ -137,6 +151,12 @@ const GridDev = ({treeConfig}: any) => {
                     columns={columns}
                     getRowId={getRowId}
                 >
+
+                    <SortingState
+                        defaultSorting={defaultSorting}
+                    />
+                    <IntegratedSorting />
+
                     <SearchState defaultValue=""/>
                     <IntegratedFiltering/>
                     {/*<SearchState*/}
@@ -157,8 +177,13 @@ const GridDev = ({treeConfig}: any) => {
                     <Table
                         columnExtensions={tableColumnExtensions}
                     />
-                    <TableHeaderRow />
-
+                    {showSortingControls
+                        ?<TableHeaderRow
+                            showSortingControls
+                        />
+                        :<TableHeaderRow
+                        />
+                    }
 
                     {showColumnVisible && <TableColumnVisibility
 
